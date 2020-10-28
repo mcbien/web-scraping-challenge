@@ -68,3 +68,19 @@ def scrape_image_otd():
     large_image_link
 
     return large_image_link
+
+    def scrape_facts():
+        # Mars Facts with pandas scraping
+        # Set url
+        url = "https://space-facts.com/mars/"
+        factspage = pd.read_html(url)
+        #print(type(factspage[1]))
+        facts_table = factspage[1]
+
+        # Set index to Mars - Earth Comparison
+        facts_table.set_index("Mars - Earth Comparison", inplace=True)
+        facts_table.head()
+        facts_table.to_html("mars_earth_facts")
+
+        # Do I nedd to return anything here since I saved to html above
+        return
