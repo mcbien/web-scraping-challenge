@@ -36,7 +36,8 @@ def scrape():
     news_title, news_p = scrape_news()
     large_image_link = scrape_image_otd()
     hemisphere_image_urls = scrape_hemi_urls()
-    return {"news_title": news_title, "news_text": news_p, "large_img_link": large_image_link, "hemi_urls": hemisphere_image_urls}
+    facts_dictionary = scrape_facts()
+    return {"news_title": news_title, "news_text": news_p, "large_img_link": large_image_link, "hemi_urls": hemisphere_image_urls, "mars_facts": facts_dictionary}
 ###############################
 
 def scrape_image_otd():
@@ -86,8 +87,12 @@ def scrape_facts():
     facts_table.head()
     facts_table.to_html("mars_earth_facts.html")
 
+    #Convert facts_table to dictionary
+    facts_dictionary = facts_table.to_dict()
+    print(facts_dictionary)
+
     # Do I need to return anything here since I saved to html above
-    return
+    return facts_dictionary
 
 
 def scrape_hemi_urls():

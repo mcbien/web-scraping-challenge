@@ -16,6 +16,10 @@ client = pymongo.MongoClient(conn)
 db = client.Mars_db
 
 #Define index/home
+@app.route('/')
+def index():
+    return "Please visit /scrape route to see Mars info"
+
 
 # Define index/home route
 @app.route('/scrape')
