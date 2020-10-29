@@ -1,5 +1,5 @@
 /* This just removes the bullets from the left of the list. */
 
-ul{ 
-    list-style: none;
+jumbotron { 
+    padding-bottom: 0;
 }
