@@ -82,7 +82,9 @@ def scrape_facts():
     # Set index to Mars - Earth Comparison
     facts_table.set_index("Mars - Earth Comparison", inplace=True)
     facts_table.head()
-    facts_table.to_html("mars_earth_facts")
+    facts_table = facts_table.drop(columns = ["Earth"])
+    facts_table.head()
+    facts_table.to_html("mars_earth_facts.html")
 
     # Do I need to return anything here since I saved to html above
     return
