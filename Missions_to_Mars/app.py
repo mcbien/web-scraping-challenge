@@ -2,6 +2,7 @@ from flask import Flask, render_template
 
 # Import our pymongo library, which lets us connect our Flask app to our Mongo database.
 import pymongo
+from pprint import pprint
 import scrape_mars
 # Create an instance of our Flask app.
 app = Flask(__name__)
@@ -27,25 +28,27 @@ def scrape():
     
     mars_dictionary = scrape_mars.scrape()
 
-    # PASTE ALL OF THE CELLS FROM THE WEB SCRAPE NOTEBOOK HERE
-
-    # write values to mongo db:
-        # Lastest Mars news:
-            # news title   
-            # news_p
-
-        # Featured Mars Image
-            # featured image url rendering image
-            # Mars facts table >> mars_earth_facts table export
-
-        # Mars Hemispheres
-            # photogrid
-            # Valles > Cerberus
-            # Schiaparelli > Sytis Major
-
-
     # render the index page and provide our dictionary
     return render_template("index.html", mars_data=mars_dictionary)
+
+    #### write scrapped data to MongDB
+    # connect to mongo
+    conn = 'mongodb://localhost:27017'
+    client = pymongo.MongoClient(conn)
+
+    # define MarsDB database in Mongo
+    db = client.MarsDB
+
+    # declare collection
+    collection = db.mars_data
+
+    # insert mars dictionary into database
+    collection.insert_one(mars_dictionary)
+
+    results = collection.find(mars_dictionary)
+    for result in results:
+        pprint(result)
+
 
 
 if __name__ == "__main__":
