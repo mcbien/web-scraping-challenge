@@ -36,8 +36,8 @@ def scrape():
     news_title, news_p = scrape_news()
     large_image_link = scrape_image_otd()
     hemisphere_image_urls = scrape_hemi_urls()
-    facts_dictionary = scrape_facts()
-    return {"news_title": news_title, "news_text": news_p, "large_img_link": large_image_link, "hemi_urls": hemisphere_image_urls, "mars_facts": facts_dictionary}
+    facts_table_html = scrape_facts()
+    return {"news_title": news_title, "news_text": news_p, "large_img_link": large_image_link, "hemi_urls": hemisphere_image_urls, "mars_facts": facts_table_html}
 ###############################
 
 def scrape_image_otd():
@@ -45,30 +45,22 @@ def scrape_image_otd():
     image_url = "https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars"
     browser.visit(image_url)
 
+    # Click Full Size
+    browser.click_link_by_partial_text('FULL IMAGE')
+
     # Splinter
     # Visit and parse web page
     html = browser.html
     soup = BeautifulSoup(html, "html.parser")
-
-    # Click Full Size
-    #browser.click_link_by_partial_text('FULL IMAGE')
-        
-    #Beautiful Soup
-    a_fancybox = soup.find_all("a", class_="fancybox")
-
-    # Print result
-    #print(a_fancybox)
-
-    # Create empty list to capture link
-    image_link = []
-    # Loop through results to find href
-    for box in a_fancybox:
-        link = box['data-fancybox-href']
-        image_link.append(link)
+    
+    #Find image element
+    image_blob = soup.find("img", class_="fancybox-image")
+    # Return just the src
+    image_link = (image_blob['src'])
+    #print(image_link)
 
     #The image link is the last record returned
-    large_image_link = "http://www.jpl.nasa.gov" + image_link[-1]
-    large_image_link
+    large_image_link = "http://www.jpl.nasa.gov" + image_link
 
     return large_image_link
 
@@ -85,14 +77,14 @@ def scrape_facts():
     facts_table.head()
     facts_table = facts_table.drop(columns = ["Earth"])
     facts_table.head()
-    facts_table.to_html("mars_earth_facts.html")
+    facts_table_html = facts_table.to_html()
 
     #Convert facts_table to dictionary
-    facts_dictionary = facts_table.to_dict()
-    print(facts_dictionary)
+    #facts_dictionary = facts_table.to_dict()
+    #print(facts_dictionary)
 
     # Do I need to return anything here since I saved to html above
-    return facts_dictionary
+    return facts_table_html
 
 
 def scrape_hemi_urls():
@@ -140,7 +132,7 @@ def scrape_hemi_urls():
     # Create dictionary of image values
     # Create empty dict
     hemisphere_image_urls = [
-        {"title": "Cerebus Hemisohere", "img_url": cerberus_link},
+        {"title": "Cerebus Hemisphere", "img_url": cerberus_link},
         {"title": "Schiaparelli Hemisphere", "img_url": schiaparelli_link},
         {"title": "Syrtis Major Hemisphere", "img_url": syrtis_link},
         {"title": "Valles Marineris Hemisphere", "img_url": valles_link}    

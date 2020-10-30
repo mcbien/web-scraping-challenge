@@ -32,37 +32,24 @@
     <div class="row">
       <div class="col-lg-8">
         <h4 class=text-left>Featured Mars Image</h4>
-        <img src={{ mars_data.large_img_link }} alt="image of the day.jpg" class="img-fluid mx-auto">
+        <img src= {{ mars_data.large_img_link }} class="img-fluid mx-auto">
       </div>
       <div class="col-lg-4">
         <h5 class=text-left> Mars Facts</h5>
-        <object data="./templates/mars_earth_facts.html"></object>
+        {{ mars_data.mars_facts|safe }}
       </div>
     </div>
     <div class="mars_pic_box">
       <br><h5 class="text-center">Mars Hemispheres</h5>
       <!-- ROW 4 -->
       <div class="row">
+        {% for url in mars_data["hemi_urls"] %}
+        <div class="col-md-6">
+          <img src={{ url.img_url }} alt="Valles Marineris.png" class="img-fluid mx-auto">
+          <h5 class="text-center">{{ url.title}}</h5>
+        </div>
+        {% endfor %}
         
-        <div class="col-md-6">
-          <img src={{ mars_data.hemi_urls[3]['img_url'] }} alt="Valles Marineris.png" class="img-fluid mx-auto">
-          <h5 class="text-center">Valles Marineris Hemisphere Enhanced</h5>
-        </div>
-        <div class="col-md-6">
-          <img src={{ mars_data.hemi_urls[0]['img_url'] }} alt="Cerebus.png" class="img-fluid mx-auto">
-          <h5 class="text-center">Cerebus Hemisphere Enhanced</h5>
-        </div>
-      </div>
-      <!-- ROW 5 -->
-      <div class="row">
-        <div class="col-md-6">
-          <img src={{ mars_data.hemi_urls[1]['img_url'] }} alt="Schiaparelli.png" class="img-fluid mx-auto">
-          <h5 class="text-center">Schiaparelli Hemisphere Enhanced</h5>
-        </div>
-        <div class="col-md-6">
-          <img src={{ mars_data.hemi_urls[2]['img_url'] }} alt="Syrtis.png" class="img-fluid mx-auto">
-          <h5 class="text-center">Syrtis Major Hemisphere Enhanced</h5>
-        </div>
       </div>
     </div>
   </div>
