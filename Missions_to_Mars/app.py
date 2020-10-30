@@ -16,6 +16,17 @@ client = pymongo.MongoClient(conn)
 # Connect to a database. 
 db = client.Mars_db
 
+#### write scrapped data to MongDB
+# connect to mongo
+conn = 'mongodb://localhost:27017'
+client = pymongo.MongoClient(conn)
+
+# define MarsDB database in Mongo
+db = client.MarsDB
+
+# declare collection
+collection = db.mars_data
+
 #Define index/home
 @app.route('/')
 def index():
@@ -28,19 +39,7 @@ def scrape():
     
     mars_dictionary = scrape_mars.scrape()
 
-    # render the index page and provide our dictionary
-    return render_template("index.html", mars_data=mars_dictionary)
-
-    #### write scrapped data to MongDB
-    # connect to mongo
-    conn = 'mongodb://localhost:27017'
-    client = pymongo.MongoClient(conn)
-
-    # define MarsDB database in Mongo
-    db = client.MarsDB
-
-    # declare collection
-    collection = db.mars_data
+    
 
     # insert mars dictionary into database
     collection.insert_one(mars_dictionary)
@@ -49,6 +48,8 @@ def scrape():
     for result in results:
         pprint(result)
 
+    # render the index page and provide our dictionary
+    return render_template("index.html", mars_data=mars_dictionary)
 
 
 if __name__ == "__main__":
